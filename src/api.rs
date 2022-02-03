@@ -1,4 +1,4 @@
-use actix_web::{get, HttpResponse, Responder};
+use actix_web::{post, get, HttpResponse, Responder};
 
 #[get("/")]
 async fn hello() -> impl Responder {
@@ -12,4 +12,9 @@ async fn echo(req_body: String) -> impl Responder {
 
 pub async fn manual_hello(req_body: String) -> impl Responder {
     HttpResponse::Ok().body("Que pasa en casa!")
+}
+
+#[post("/post")]
+async fn post(req_body: String) -> impl Responder {
+    HttpResponse::Ok().body(req_body)
 }
