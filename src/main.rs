@@ -1,16 +1,30 @@
-mod api;
+mod routes;
+mod joke;
 
-use actix_web::{App, HttpServer, web};
-use crate::api::{hello, echo, manual_hello, post};
+use sqlx::sqlite::SqlitePoolOptions;
+use actix_web::{App, HttpServer};
+use dotenv::dotenv;
+use std::env;
+use crate::routes::{root, all_jokes, get_joke};
+
+// use actix_web::{App, HttpServer, web};
+// use crate::routes::{root, all_jokes};
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(||{
+    dotenv().ok();
+    let db_url = env::var("DATABASE_URL").expect("Database not found");
+    let pool = SqlitePoolOptions::new()
+        .max_connections(4)
+        .connect(&db_url)
+        .await
+        .expect("pool failed");
+    HttpServer::new(move ||{
         App::new()
-            .service(hello)
-            .service(echo)
-            .service(post)
-            .route("/hey", web::get().to(manual_hello))
+            .data(pool.clone())
+            .service(root)
+            .service(all_jokes)
+            .service(get_joke)
     })
     .bind("127.0.0.1:8080")
     .unwrap()
