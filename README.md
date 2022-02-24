@@ -46,3 +46,10 @@ To enable guilding in "offline mode" with "query!()",
 ```
 cargo sqlx prepare
 ```
+
+To check,
+
+```
+cargo sqlx prepare --check
+```
+
