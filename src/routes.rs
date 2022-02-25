@@ -23,3 +23,11 @@ pub async fn get_joke(pool: web::Data<SqlitePool>, web::Path(joke_id): web::Path
        .map(|joke| HttpResponse::Ok().json(joke))
        .map_err(|_| HttpResponse::InternalServerError())?)
 }
+
+#[get("/jokes/random")]
+pub async fn get_random_joke(pool: web::Data<SqlitePool>) -> Result<HttpResponse, Error>{
+    Ok(Joke::random(pool)
+       .await
+       .map(|joke| HttpResponse::Ok().json(joke))
+       .map_err(|_| HttpResponse::InternalServerError())?)
+}

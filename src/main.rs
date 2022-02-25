@@ -1,6 +1,7 @@
 mod routes;
 mod joke;
 
+use routes::get_random_joke;
 use sqlx::sqlite::SqlitePoolOptions;
 use actix_web::{App, HttpServer};
 use dotenv::dotenv;
@@ -25,6 +26,7 @@ async fn main() -> std::io::Result<()> {
             .service(root)
             .service(all_jokes)
             .service(get_joke)
+            .service(get_random_joke)
     })
     .bind("127.0.0.1:8080")
     .unwrap()
