@@ -14,6 +14,13 @@ pub struct Joke{
     pub updated_at: NaiveDateTime,
 }
 
+#[derive(Debug, FromRow, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct NewJoke{
+    pub author: String,
+    pub value: String,
+}
+
 impl Joke{
     pub async fn all(pool: web::Data<SqlitePool>) -> Result<Vec<Joke>, Error>{
         let jokes = query_as!(Joke, r#"SELECT id, author, value, created_at, updated_at FROM jokes"#)
