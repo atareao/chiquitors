@@ -1,3 +1,7 @@
+Dependecies:
+
+* `sqlx-cli`. To do all work
+
 Create the file `.env` with the following content,
 
 ```
