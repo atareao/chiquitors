@@ -58,7 +58,11 @@ impl Joke{
             .await
     }
 
-    pub async fn new(pool: web::Data<SqlitePool>, author: &str, value: &str, created_at: i64, updated_at: i64) -> Result<Joke, Error>{
+    pub async fn new(pool: web::Data<SqlitePool>, new_joke: NewJoke) -> Result<Joke, Error>{
+        let created_at: i64 = 0;
+        let updated_at: i64 = 0;
+        let author = &new_joke.author;
+        let value = &new_joke.value;
         let id = query("INSERT INTO jokes (author, value, created_at, updated_at) VALUES (?, ?, ?, ?);")
             .bind(author)
             .bind(value)

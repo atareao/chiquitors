@@ -36,10 +36,8 @@ pub async fn get_random_joke(pool: web::Data<SqlitePool>) -> Result<HttpResponse
 
 #[post("/jokes")]
 pub async fn new_joke(pool: web::Data<SqlitePool>, data: web::Json<NewJoke>) -> Result<HttpResponse, Error>{
-    let created_at: i64 = 0;
-    let updated_at: i64 = 0;
-    Ok(Joke::new(pool, &data.into_inner().author, &data.into_inner().value,
-            created_at, updated_at)
+    let new_joke = data.into_inner();
+    Ok(Joke::new(pool, new_joke)
        .await
        .map(|joke| HttpResponse::Ok().json(joke))
        .map_err(|_| HttpResponse::InternalServerError())?)
